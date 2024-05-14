@@ -93,9 +93,6 @@ const parseCSVFile = (file: File) => {
           y[key] = [];
         }
       }
-
-       // 延时一下再继续解析
-      setTimeout(() => parser.resume(), 0);
     },
     complete: (results) => {
       console.log('All chunks processed', results);
@@ -109,7 +106,12 @@ const parseCSVFile = (file: File) => {
 
 <template>
   <div>
-    <input type="file" @change="handleFileChange" accept=".csv" />
+    <div v-if="parserInstance">
+    <button @click="()=>{
+      parserInstance?.resume()
+    }">继续渲染</button>
+    </div>
+    <input v-else type="file" @change="handleFileChange" accept=".csv" />
     <div ref="container"></div>
   </div>
 </template>
